@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algoritmos y Big Data</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #667eea;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 25px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid transparent;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      border-color: #667eea;
+    }
+
+    .section.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transform: scale(1.02);
+    }
+
+    .section-title {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon {
+      font-size: 1.8em;
+    }
+
+    .section-content {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid rgba(255, 255, 255, 0.3);
+      line-height: 1.6;
+    }
+
+    .section.active .section-content {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .interactive-demo {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    .demo-step {
+      padding: 15px;
+      margin: 10px 0;
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .demo-step:hover {
+      background: #e0e8ff;
+      transform: translateX(5px);
+    }
+
+    .code-block {
+      background: #2d3748;
+      color: #68d391;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+
+    .flow-diagram {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .flow-box {
+      background: white;
+      color: #667eea;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .flow-box:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .arrow {
+      font-size: 2em;
+      color: white;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: white;
+      color: #667eea;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-number {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #764ba2;
+    }
+
+    .stat-label {
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      margin: 10px 5px;
+    }
+
+    button:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .highlight {
+      background: #ffd700;
+      color: #333;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🤖 Algoritmos y Big Data</h1>
+    <p class="subtitle">Explora cómo los algoritmos transforman datos en decisiones inteligentes</p>
+
+    <div class="section" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">📚</span>
+        <span>¿Qué es un Algoritmo?</span>
+      </div>
+      <div class="section-content">
+        <p>Un algoritmo es una <span class="highlight">secuencia finita de instrucciones lógicas</span> diseñadas para resolver un problema o realizar una tarea específica.</p>
+
+        <div class="interactive-demo">
+          <h3>Ejemplo Interactivo: Algoritmo de Búsqueda</h3>
+          <div class="code-block">
+            ALGORITMO: Encontrar el mayor número
+            INPUT: Lista de números [5, 12, 3, 9, 7]
+
+            PASO 1: Establecer mayor = primer número (5)
+            PASO 2: Para cada número en la lista:
+            SI número > mayor ENTONCES
+            mayor = número
+            PASO 3: Retornar mayor
+
+            OUTPUT: 12
+          </div>
+          <button onclick="simularBusqueda()">▶️ Simular Algoritmo</button>
+          <div id="resultado-busqueda"></div>
+        </div>
+
+        <div class="demo-step">
+          <strong>Características clave:</strong> Finito, Definido, Entrada/Salida clara, Efectivo
+        </div>
+      </div>
+    </div>
+
+    <div class="section" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">⚙️</span>
+        <span>Procesos Automáticos</span>
+      </div>
+      <div class="section-content">
+        <p>Los algoritmos son el <span class="highlight">motor de la automatización</span>, ejecutando tareas sin intervención humana continua.</p>
+
+        <div class="flow-diagram">
+          <div class="flow-box">Entrada de Datos</div>
+          <span class="arrow">→</span>
+          <div class="flow-box">Algoritmo</div>
+          <span class="arrow">→</span>
+          <div class="flow-box">Procesamiento</div>
+          <span class="arrow">→</span>
+          <div class="flow-box">Resultado</div>
+        </div>
+
+        <div class="interactive-demo">
+          <h3>Ejemplo: Sistema de Recomendación</h3>
+          <div class="demo-step">
+            <strong>1. Recopilación:</strong> Historial de navegación del usuario
+          </div>
+          <div class="demo-step">
+            <strong>2. Análisis:</strong> Algoritmo identifica patrones y preferencias
+          </div>
+          <div class="demo-step">
+            <strong>3. Decisión:</strong> Genera recomendaciones personalizadas
+          </div>
+          <div class="demo-step">
+            <strong>4. Acción:</strong> Muestra contenido relevante automáticamente
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🗄️</span>
+        <span>¿Qué es Big Data?</span>
+      </div>
+      <div class="section-content">
+        <p>Big Data se refiere a conjuntos de datos <span class="highlight">masivos y complejos</span> que superan la capacidad de procesamiento de herramientas tradicionales.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">2.5</div>
+            <div class="stat-label">Quintillones de bytes generados diariamente</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">90%</div>
+            <div class="stat-label">De los datos mundiales creados en los últimos 2 años</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5 V's</div>
+            <div class="stat-label">Volumen, Velocidad, Variedad, Veracidad, Valor</div>
+          </div>
+        </div>
+
+        <div class="interactive-demo">
+          <h3>Las 5 V's del Big Data</h3>
+          <div class="demo-step">📊 <strong>Volumen:</strong> Petabytes de información</div>
+          <div class="demo-step">⚡ <strong>Velocidad:</strong> Datos generados en tiempo real</div>
+          <div class="demo-step">🎨 <strong>Variedad:</strong> Estructurados, semi-estructurados, no estructurados</div>
+          <div class="demo-step">✓ <strong>Veracidad:</strong> Calidad y confiabilidad de los datos</div>
+          <div class="demo-step">💎 <strong>Valor:</strong> Información útil para la toma de decisiones</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🧠</span>
+        <span>Algoritmos en el Análisis de Big Data</span>
+      </div>
+      <div class="section-content">
+        <p>Los algoritmos son <span class="highlight">esenciales para extraer valor</span> de grandes volúmenes de datos.</p>
+
+        <div class="interactive-demo">
+          <h3>Tipos de Algoritmos Utilizados</h3>
+
+          <div class="demo-step">
+            <strong>🔍 Machine Learning:</strong> Aprenden patrones automáticamente
+            <div class="code-block">
+              Ejemplo: Clasificación de emails
+              IF palabras_spam > umbral THEN
+              categoría = "spam"
+              ELSE
+              categoría = "legítimo"
+            </div>
+          </div>
+
+          <div class="demo-step">
+            <strong>📈 Análisis Predictivo:</strong> Predicen tendencias futuras
+            <div class="code-block">
+              Ejemplo: Predicción de ventas
+              ventas_futuras = f(historial, temporada, promociones)
+            </div>
+          </div>
+
+          <div class="demo-step">
+            <strong>🔗 Clustering:</strong> Agrupan datos similares
+            <div class="code-block">
+              Ejemplo: Segmentación de clientes
+              PARA cada cliente:
+              calcular_similitud(cliente, grupos)
+              asignar_al_grupo_más_cercano()
+            </div>
+          </div>
+
+          <div class="demo-step">
+            <strong>🌐 Procesamiento Distribuido:</strong> MapReduce divide tareas
+            <div class="code-block">
+              MAP: Divide datos en nodos → Procesa paralelo
+              REDUCE: Combina resultados → Genera output final
+            </div>
+          </div>
+        </div>
+
+        <button onclick="visualizarProceso()">🎯 Visualizar Proceso Completo</button>
+        <div id="proceso-completo"></div>
+      </div>
+    </div>
+
+    <div class="section" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🔌</span>
+        <span>Ejemplo Interactivo: Algoritmos ON/OFF</span>
+      </div>
+      <div class="section-content">
+        <p>Los algoritmos ON/OFF son la base de la <span class="highlight">lógica binaria</span> que controla sistemas automáticos mediante decisiones de dos estados.</p>
+
+        <div class="interactive-demo">
+          <h3>🏠 Sistema de Climatización Inteligente</h3>
+          <p>Simula un sistema automático que controla calefacción y aire acondicionado</p>
+
+          <div class="code-block">
+            ALGORITMO: Control de Temperatura
+            INPUT: temperatura_actual, temperatura_deseada
+
+            SI temperatura_actual < (temperatura_deseada - 2) ENTONCES calefaccion=ON aire_acondicionado=OFF SI NO, SI temperatura_actual> (temperatura_deseada + 2) ENTONCES
+              calefaccion = OFF
+              aire_acondicionado = ON
+
+              SI NO
+              calefaccion = OFF
+              aire_acondicionado = OFF
+          </div>
+
+          <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; color: #333;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+              <div>
+                <label style="display: block; margin-bottom: 10px; font-weight: bold;">🌡️ Temperatura Actual: <span id="temp-actual">20</span>°C</label>
+                <input type="range" id="slider-actual" min="10" max="35" value="20" style="width: 100%;" oninput="actualizarTemperatura()">
+              </div>
+              <div>
+                <label style="display: block; margin-bottom: 10px; font-weight: bold;">🎯 Temperatura Deseada: <span id="temp-deseada">22</span>°C</label>
+                <input type="range" id="slider-deseada" min="15" max="30" value="22" style="width: 100%;" oninput="actualizarTemperatura()">
+              </div>
+            </div>
+
+            <button onclick="iniciarAutomatizacion()" style="width: 100%; font-size: 1.1em;">
+              ⚡ Activar Sistema Automático
+            </button>
+
+            <div id="estado-sistema" style="margin-top: 20px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div id="calefaccion-estado" class="device-card" style="padding: 20px; border-radius: 10px; text-align: center; background: #e0e0e0; transition: all 0.3s;">
+                  <div style="font-size: 3em;">🔥</div>
+                  <div style="font-weight: bold; margin-top: 10px;">CALEFACCIÓN</div>
+                  <div id="calefaccion-label" style="font-size: 1.2em; margin-top: 5px;">OFF</div>
+                </div>
+                <div id="aire-estado" class="device-card" style="padding: 20px; border-radius: 10px; text-align: center; background: #e0e0e0; transition: all 0.3s;">
+                  <div style="font-size: 3em;">❄️</div>
+                  <div style="font-weight: bold; margin-top: 10px;">AIRE ACONDICIONADO</div>
+                  <div id="aire-label" style="font-size: 1.2em; margin-top: 5px;">OFF</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="log-decisiones" style="margin-top: 20px; padding: 15px; background: #f0f4ff; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+              <div style="font-weight: bold; margin-bottom: 10px;">📋 Registro de Decisiones del Algoritmo:</div>
+              <div id="log-content"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="interactive-demo" style="margin-top: 20px;">
+          <h3>💡 Otros Ejemplos de Algoritmos ON/OFF</h3>
+          <div class="demo-step">
+            <strong>🚦 Semáforos Inteligentes:</strong> Verde/Rojo según densidad de tráfico
+            <div class="code-block" style="font-size: 0.9em;">
+              SI vehiculos_esperando > 10 ENTONCES luz = VERDE
+              SI NO luz = ROJO
+            </div>
+          </div>
+          <div class="demo-step">
+            <strong>💧 Sistema de Riego Automático:</strong> ON/OFF según humedad del suelo
+            <div class="code-block" style="font-size: 0.9em;">
+              SI humedad < 30% ENTONCES riego=ON SI humedad> 60% ENTONCES riego = OFF
+            </div>
+          </div>
+          <div class="demo-step">
+            <strong>🔒 Control de Acceso:</strong> Abierto/Cerrado según identificación
+            <div class="code-block" style="font-size: 0.9em;">
+              SI tarjeta_valida = TRUE ENTONCES puerta = ABIERTA
+              SI NO puerta = CERRADA
+            </div>
+          </div>
+          <div class="demo-step">
+            <strong>📧 Filtro de Spam:</strong> Bandeja/Spam según algoritmo de clasificación
+            <div class="code-block" style="font-size: 0.9em;">
+              SI probabilidad_spam > 0.7 ENTONCES destino = SPAM
+              SI NO destino = BANDEJA_ENTRADA
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="section" onclick="toggleSection(this)">
+  <div class="section-title">
+    <span class="icon">🎯</span>
+    <span>Aplicaciones Prácticas</span>
+  </div>
+
+  <div class="section-content">
+    <p>Los algoritmos de Big Data están <span class="highlight">transformando industrias</span> completas.</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="icon">🏥</div>
+        <div class="stat-label"><strong>Salud:</strong> Diagnóstico médico asistido por IA</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🛒</div>
+        <div class="stat-label"><strong>E-commerce:</strong> Recomendaciones personalizadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🚗</div>
+        <div class="stat-label"><strong>Transporte:</strong> Optimización de rutas</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">💰</div>
+        <div class="stat-label"><strong>Finanzas:</strong> Detección de fraudes</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📱</div>
+        <div class="stat-label"><strong>Redes Sociales:</strong> Análisis de sentimientos</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🏭</div>
+        <div class="stat-label"><strong>Industria:</strong> Mantenimiento predictivo</div>
+      </div>
+    </div>
+
+    <div class="interactive-demo">
+      <h3>Caso de Estudio: Netflix</h3>
+      <div class="demo-step">📊 Recopila datos de 200+ millones de usuarios</div>
+      <div class="demo-step">🤖 Algoritmos analizan patrones de visualización</div>
+      <div class="demo-step">🎬 Genera 80% de las visualizaciones mediante recomendaciones</div>
+      <div class="demo-step">💰 Ahorra $1 billón anual en retención de clientes</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CONCLUSIONES ================= -->
+<div class="section" onclick="toggleSection(this)">
+  <div class="section-title">
+    <span class="icon">✅</span>
+    <span>Conclusiones</span>
+  </div>
+  <div class="section-content">
+    <div class="interactive-demo">
+      <div class="demo-step">✔️ Los algoritmos son la base de la <span class="highlight">automatización de procesos modernos</span>.</div>
+      <div class="demo-step">✔️ El pensamiento algorítmico permite resolver problemas complejos mediante instrucciones claras y lógicas.</div>
+      <div class="demo-step">✔️ En Big Data, los algoritmos transforman grandes volúmenes de datos en información útil para la toma de decisiones.</div>
+      <div class="demo-step">✔️ Los algoritmos ON / OFF permiten controlar procesos automáticos de forma eficiente.</div>
+      <div class="demo-step">✔️ La interactividad facilita la comprensión del impacto real de los algoritmos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PITCH DE NEGOCIO ================= -->
+<div class="section" onclick="toggleSection(this)">
+  <div class="section-title">
+    <span class="icon">🚀</span>
+    <span>Pitch de Negocio</span>
+  </div>
+  <div class="section-content">
+    <div class="interactive-demo">
+      <p>
+        Esta infografía interactiva demuestra cómo los algoritmos, mediante instrucciones lógicas,
+        hacen posible la automatización de procesos y el análisis de Big Data.
+      </p>
+      <p style="margin-top: 15px;">
+        No solo explica conceptos, los muestra en acción, convirtiéndose en una herramienta clara,
+        visual y efectiva para comprender la transformación digital.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+  <script>
+    function toggleSection(element) {
+      const allSections = document.querySelectorAll('.section');
+      if (element.classList.contains('active')) {
+        element.classList.remove('active');
+      } else {
+        allSections.forEach(section => section.classList.remove('active'));
+        element.classList.add('active');
+      }
+    }
+
+    function simularBusqueda() {
+      const resultado = document.getElementById('resultado-busqueda');
+      const numeros = [5, 12, 3, 9, 7];
+      let mayor = numeros[0];
+      let pasos = `<div class="interactive-demo" style="margin-top: 15px;">`;
+      pasos += `<div class="demo-step">📥 Lista inicial: [${numeros.join(', ')}]</div>`;
+      pasos += `<div class="demo-step">🎯 Mayor inicial: ${mayor}</div>`;
+      for (let i = 1; i < numeros.length; i++) {
+        if (numeros[i] > mayor) {
+          pasos += `<div class="demo-step">✅ ${numeros[i]} > ${mayor} → Nuevo mayor: ${numeros[i]}</div>`;
+          mayor = numeros[i];
+        } else {
+          pasos += `<div class="demo-step">❌ ${numeros[i]} ≤ ${mayor} → Mayor sigue siendo: ${mayor}</div>`;
+        }
+      }
+      pasos += `<div class="demo-step" style="background: #68d391; color: white; font-size: 1.2em;">🏆 Resultado final: ${mayor}</div>`;
+      pasos += `</div>`;
+      resultado.innerHTML = pasos;
+    }
+
+    function visualizarProceso() {
+      const div = document.getElementById('proceso-completo');
+      div.innerHTML = `
+                <div class="interactive-demo" style="margin-top: 15px;">
+                    <h3>🔄 Flujo Completo de Análisis</h3>
+                    <div class="flow-diagram" style="flex-direction: column; align-items: stretch;">
+                        <div class="flow-box" style="width: 100%;">1️⃣ Recolección: Datos de múltiples fuentes (sensores, usuarios, transacciones)</div>
+                        <div class="arrow" style="text-align: center;">↓</div>
+                        <div class="flow-box" style="width: 100%;">2️⃣ Almacenamiento: Data Lakes y Data Warehouses</div>
+                        <div class="arrow" style="text-align: center;">↓</div>
+                        <div class="flow-box" style="width: 100%;">3️⃣ Limpieza: Eliminación de duplicados e inconsistencias</div>
+                        <div class="arrow" style="text-align: center;">↓</div>
+                        <div class="flow-box" style="width: 100%;">4️⃣ Análisis: Algoritmos de ML procesan patrones</div>
+                        <div class="arrow" style="text-align: center;">↓</div>
+                        <div class="flow-box" style="width: 100%;">5️⃣ Visualización: Dashboards y reportes interactivos</div>
+                        <div class="arrow" style="text-align: center;">↓</div>
+                        <div class="flow-box" style="width: 100%; background: #68d391; color: white;">6️⃣ Acción: Decisiones basadas en datos</div>
+                    </div>
+                </div>
+            `;
+    }
+    let intervalAutomatizacion = null;
+
+    function actualizarTemperatura() {
+      const tempActual = document.getElementById('slider-actual').value;
+      const tempDeseada = document.getElementById('slider-deseada').value;
+      document.getElementById('temp-actual').textContent = tempActual;
+      document.getElementById('temp-deseada').textContent = tempDeseada;
+      evaluarSistema(parseFloat(tempActual), parseFloat(tempDeseada));
+    }
+
+    function evaluarSistema(tempActual, tempDeseada) {
+      const calefaccionDiv = document.getElementById('calefaccion-estado');
+      const aireDiv = document.getElementById('aire-estado');
+      const calefaccionLabel = document.getElementById('calefaccion-label');
+      const aireLabel = document.getElementById('aire-label');
+      const logContent = document.getElementById('log-content');
+      let calefaccion = false;
+      let aire = false;
+      let mensaje = '';
+      if (tempActual < (tempDeseada - 2)) {
+        calefaccion = true;
+        aire = false;
+        mensaje = `🌡️ ${tempActual}°C < ${tempDeseada - 2}°C → `;
+        mensaje += `<span style="color: #e74c3c; font-weight: bold;">CALEFACCIÓN ON</span>, `;
+        mensaje += `<span style="color: #95a5a6;">AIRE OFF</span>`;
+      } else if (tempActual > (tempDeseada + 2)) {
+        calefaccion = false;
+        aire = true;
+        mensaje = `🌡️ ${tempActual}°C > ${tempDeseada + 2}°C → `;
+        mensaje += `<span style="color: #95a5a6;">CALEFACCIÓN OFF</span>, `;
+        mensaje += `<span style="color: #3498db; font-weight: bold;">AIRE ON</span>`;
+      } else {
+        calefaccion = false;
+        aire = false;
+        mensaje = `🌡️ ${tempActual}°C está en rango (${tempDeseada - 2}°C - ${tempDeseada + 2}°C) → `;
+        mensaje += `<span style="color: #27ae60; font-weight: bold;">AMBOS OFF - TEMPERATURA ÓPTIMA</span>`;
+      }
+      // Actualizar estado visual de calefacción
+      if (calefaccion) {
+        calefaccionDiv.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
+        calefaccionDiv.style.color = 'white';
+        calefaccionDiv.style.boxShadow = '0 0 30px rgba(255, 107, 107, 0.6)';
+        calefaccionLabel.textContent = 'ON';
+      } else {
+        calefaccionDiv.style.background = '#e0e0e0';
+        calefaccionDiv.style.color = '#666';
+        calefaccionDiv.style.boxShadow = 'none';
+        calefaccionLabel.textContent = 'OFF';
+      }
+      // Actualizar estado visual de aire acondicionado
+      if (aire) {
+        aireDiv.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+        aireDiv.style.color = 'white';
+        aireDiv.style.boxShadow = '0 0 30px rgba(79, 172, 254, 0.6)';
+        aireLabel.textContent = 'ON';
+      } else {
+        aireDiv.style.background = '#e0e0e0';
+        aireDiv.style.color = '#666';
+        aireDiv.style.boxShadow = 'none';
+        aireLabel.textContent = 'OFF';
+      }
+      // Agregar al log con timestamp
+      const timestamp = new Date().toLocaleTimeString();
+      const logEntry = document.createElement('div');
+      logEntry.style.padding = '8px';
+      logEntry.style.marginBottom = '5px';
+      logEntry.style.background = 'white';
+      logEntry.style.borderRadius = '5px';
+      logEntry.style.borderLeft = '4px solid #667eea';
+      logEntry.innerHTML = `<small>${timestamp}</small> - ${mensaje}`;
+      logContent.insertBefore(logEntry, logContent.firstChild);
+      // Limitar log a 10 entradas
+      while (logContent.children.length > 10) {
+        logContent.removeChild(logContent.lastChild);
+      }
+    }
+
+    function iniciarAutomatizacion() {
+      const logContent = document.getElementById('log-content');
+      logContent.innerHTML = '<div style="color: #27ae60; font-weight: bold;">✅ Sistema automático activado</div>';
+      // Simular cambios automáticos de temperatura
+      let contador = 0;
+      const slider = document.getElementById('slider-actual');
+      if (intervalAutomatizacion) {
+        clearInterval(intervalAutomatizacion);
+      }
+      intervalAutomatizacion = setInterval(() => {
+        contador++;
+        // Simular fluctuaciones de temperatura
+        const cambio = Math.random() > 0.5 ? 0.5 : -0.5;
+        let nuevaTemp = parseFloat(slider.value) + cambio;
+        // Simular efecto de los sistemas
+        const tempDeseada = parseFloat(document.getElementById('slider-deseada').value);
+        const calefaccionOn = document.getElementById('calefaccion-label').textContent === 'ON';
+        const aireOn = document.getElementById('aire-label').textContent === 'ON';
+        if (calefaccionOn) {
+          nuevaTemp += 0.8; // La calefacción sube la temperatura
+        } else if (aireOn) {
+          nuevaTemp -= 0.8; // El aire baja la temperatura
+        }
+        // Mantener en rango
+        nuevaTemp = Math.max(10, Math.min(35, nuevaTemp));
+        slider.value = nuevaTemp.toFixed(1);
+        actualizarTemperatura();
+        // Detener después de 30 segundos
+        if (contador >= 30) {
+          clearInterval(intervalAutomatizacion);
+          const logEntry = document.createElement('div');
+          logEntry.style.padding = '8px';
+          logEntry.style.background = '#fff3cd';
+          logEntry.style.borderRadius = '5px';
+          logEntry.style.marginTop = '10px';
+          logEntry.style.fontWeight = 'bold';
+          logEntry.innerHTML = '⏹️ Simulación completada';
+          logContent.insertBefore(logEntry, logContent.firstChild);
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>
